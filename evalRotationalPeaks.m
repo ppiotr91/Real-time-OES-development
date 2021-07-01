@@ -53,9 +53,11 @@ end
 WAVELENGTH = roVib(system,V1,V2,J1,J2,0);
 
 TXT     = cell(size(J1));
-for i   = 1:length(V1)
+for i   = 1:length(WAVELENGTH)
     TXT(i)  = {sprintf('(%d, %d)',J1(i),J2(i))};
 end
+
+TXT     = TXT';
 
 end
 
