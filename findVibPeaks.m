@@ -13,38 +13,52 @@ clc; clear; close all;
 %           the rotational temperatures in Kelvin. 
 %       
 %       -   The wavelenghts for each transition are calcuated using
-%           evalRotaitonalPeaks function. 
+%           evalRotationalPeaks function. 
+syst        = '1-';
+V1          = 0;
+V2          = 0;
+J1          = 20;
+J2          = 36;
 
-specData    = importdata('0_2000_8000.txt');
-waveLength  = specData(:,1) + 0.1184;
-intensity   = specData(:,2)/max(specData(:,2));
-plot(waveLength, intensity);    hold on;
+[wlBH, ~]                   = evalBandHead(syst,V1,V2);
+[wl, Bv1, J1, J2, txt]      = evalRotationalPeaks(syst,'P',V1,V2,J1,J2);
+fortratDiagram(syst, V1, V2)
 
-[wl, J1,J2, txt]  = evalRotationalPeaks('1-','P',0,0,0,40);
-wl  = wl + 0.004;
-inten   = interp1(waveLength,intensity,wl);
 
+fName   = 'PWM-1000W-10-0.5Ar-10N2.csv';
+[wavelength, intensity] = reshapeLF(fName);
+intensity               = intensity/max(intensity);
+[~,indexMax]            = max(intensity);
+wavelength              = wavelength - (wavelength(indexMax) - wlBH);
+inten                   = interp1(wavelength,intensity,wl);
+
+figure
+plot(wavelength, intensity);    hold on;
+plot([wlBH, wlBH], [0,1],'--r');
 scatter(wl,inten,'filled','DisplayName', 'First Negative System');
-text(wl,inten+0.1,txt,'FontWeight','bold','FontSize',8,...
+text(wl,inten,txt,'FontWeight','bold','FontSize',10,...
         'HorizontalAlignment','center');
+axis([min(wl)-0.2 max(wl)+0.2 0 inf+0.3]);
+
+maxInten            = zeros(length(wl)-1,1);
+maxWavelength       = zeros(length(wl)-1,1);    
+for i = 1:length(wl)-1
+    indexLower                  = find(wavelength > wl(i+1), 1 );
+    indexUpper                  = find(wavelength < wl(i), 1, 'last' );
+    [~, indexMin]               = min(intensity(indexLower:indexUpper));
+    indexMin                    = indexMin + indexLower - 1;
+    [maxInten(i),indexMaxInten] = max(intensity(indexMin:indexUpper));
+    indexMaxInten               = indexMaxInten + indexMin - 1;
     
-axis([300 550 0 inf]);
+    maxWavelength(i)    = wavelength(indexMaxInten);
+end
+
+scatter(maxWavelength,maxInten,'filled','DisplayName', 'First Negative System');
+
+% [maxInten,indexMaxInten]    = findpeaks(intensity(indexLower:indexUpper));
+% maxWavelength(i)            = wavelength(indexLower + indexMaxInten - 1);
 
 
 
-% v1  = 0:3;
-% v2  = 0:6;
-% J1  = 0;
-% J2  = 0;
-% [V1,V2] = meshgrid(v1,v2);
-% wl      = roVib('1-',V1, V2, J1, J2, 0);
-% 
-% V1      = reshape(V1,[],1);
-% V2      = reshape(V2,[],1);
-% wl      = reshape(wl,[],1);
 
-% 
-% txt     = cell(size(V1));
-% for i   = 1:length(V1)
-%     txt(i)  = {sprintf('(%d, %d)',V1(i),V2(i))};
-% end
+

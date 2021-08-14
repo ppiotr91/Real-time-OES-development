@@ -1,4 +1,4 @@
-function [WAVELENGTH,J1,J2,TXT] = evalRotationalPeaks(system, branch, V1, V2, J1i, J1f)
+function [WAVELENGTH, BV1, J1,J2,TXT] = evalRotationalPeaks(system, branch, V1, V2, J1i, J1f)
 % Use this function to evaluate the wavelength of the rotational lines
 % between upper level rotational quantum numbers, J1, for any vibrational
 % system. The P-Branch will only provide outputs with a delJ of +1.
@@ -35,7 +35,7 @@ function [WAVELENGTH,J1,J2,TXT] = evalRotationalPeaks(system, branch, V1, V2, J1
 switch branch
     %For P-Branch, delJ = +1. J1 can be evaluated upto 0.
     case 'P'
-        J1  = J1i:J1f;
+        J1  = (J1i:J1f)';
         J2  = J1 + 1;
         
     %For R-Branch, delJ = -1. J1 CANNOT be evaluated at 0.     
@@ -44,13 +44,14 @@ switch branch
             warning('Upper Rotational quantum number cannot be evaluated at 0');
             J1i     = 1;
         end
-        J1  = J1i:J1f;
+        J1  = (J1i:J1f)';
         J2  = J1 - 1;
     otherwise
         error('Invalid input for branch selected. Choose "R" or "P" branches');
 end
 
-WAVELENGTH = roVib(system,V1,V2,J1,J2,0);
+[WAVELENGTH,BV1]    = roVib(system,V1,V2,J1,J2);
+BV1                 = unique(BV1);
 
 TXT     = cell(size(J1));
 for i   = 1:length(WAVELENGTH)

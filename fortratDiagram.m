@@ -31,7 +31,7 @@ figure
 scatter (wl, J2,'r','filled','DisplayName','P-Branch'); hold on;
 
 [wlBandhead, J2Bandhead]    = evalBandHead(system,V1,V2);
-txt                         = sprintf('(%d, %d)\n %.2f nm',J2Bandhead-1, J2Bandhead, wlBandhead);
+txt                         = sprintf('(%d, %d)\n %.4f nm',J2Bandhead-1, J2Bandhead, wlBandhead);
 scatter (wlBandhead, J2Bandhead, 'b', 'filled', 'DisplayName', 'Bandhead');
 
 % Evaluate R-branch

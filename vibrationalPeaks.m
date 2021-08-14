@@ -30,7 +30,7 @@ hold on;
 
 % FIRST NEGATIVE SYSTEM
 [V1,V2] = meshgrid(v1,v2);
-wl      = roVib('1-',V1, V2, J1, J2, 0);
+wl      = roVib('1-',V1, V2, J1, J2);
 
 V1      = reshape(V1,[],1);
 V2      = reshape(V2,[],1);
@@ -47,7 +47,7 @@ text(wl,V1+0.1,txt,'FontWeight','bold','FontSize',8,...
 
 % SECOND POSITIVE SYSTEM
 [V1,V2] = meshgrid(v1,v2);
-wl      = roVib('2+',V1, V2, J1, J2, 0);
+wl      = roVib('2+',V1, V2, J1, J2);
 
 V1      = reshape(V1,[],1);
 wl      = reshape(wl,[],1);
@@ -58,7 +58,7 @@ text(wl,V1+0.35,txt,'FontWeight','bold','FontSize',8,...
 
 % FIRST POSITIVE SYSTEM
 [V1,V2] = meshgrid(v1,v2);
-wl      = roVib('1+',V1, V2, J1, J2, 0);
+wl      = roVib('1+',V1, V2, J1, J2);
 
 V1      = reshape(V1,[],1);
 V2      = reshape(V2,[],1);
