@@ -32,7 +32,7 @@ function [WAVELENGTH, BV1, BV2] = roVib(system, V1, V2, J1, J2)
 %           rotational constants are only valid for v = 0-4.
 %       - Te is the electronic energy of the vibrational state, Tv is the
 %           vibrational energy of a specified vibrational level, and F is the 
-%           rotational energy of a specified rotaitonal level. v here
+%           rotational energy of a specified rotational level. v here
 %           corresponds to the net change in energy during transition. B is
 %           the rotational constant
 %       - Te1 and Be1 correspond to the upper state corresponding to
